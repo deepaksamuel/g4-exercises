@@ -39,6 +39,7 @@
 #include "G4LogicalVolume.hh"
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4AnalysisManager.hh"
 
 namespace B1
 {
@@ -49,20 +50,7 @@ RunAction::RunAction()
 {
   // add new units for dose
   //
-  const G4double milligray = 1.e-3*gray;
-  const G4double microgray = 1.e-6*gray;
-  const G4double nanogray  = 1.e-9*gray;
-  const G4double picogray  = 1.e-12*gray;
 
-  new G4UnitDefinition("milligray", "milliGy" , "Dose", milligray);
-  new G4UnitDefinition("microgray", "microGy" , "Dose", microgray);
-  new G4UnitDefinition("nanogray" , "nanoGy"  , "Dose", nanogray);
-  new G4UnitDefinition("picogray" , "picoGy"  , "Dose", picogray);
-
-  // Register accumulable to the accumulable manager
-  G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
-  accumulableManager->RegisterAccumulable(fEdep);
-  accumulableManager->RegisterAccumulable(fEdep2);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -81,81 +69,84 @@ void RunAction::BeginOfRunAction(const G4Run*)
   G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
   accumulableManager->Reset();
 
+
+
+  G4AnalysisManager* man = G4AnalysisManager::Instance();
+    // man->SetNtupleMerging(true); // very important
+    man->OpenFile("output.csv");
+
+    man->CreateNtuple("simple", "out_data");
+
+    man->CreateNtupleDColumn("eid");        // column Id = 0
+    man->CreateNtupleDColumn("pid");        // column Id = 1
+    man->CreateNtupleSColumn("detectorId"); // column Id = 2
+    man->CreateNtupleDColumn("is_primary"); // column Id = 3
+
+    // if (det->recordPosition())
+    {
+      man->CreateNtupleDColumn("posx");     // column Id = 4
+      man->CreateNtupleDColumn("posy");     // column Id = 5
+      man->CreateNtupleDColumn("posz");     // column Id = 6
+      man->CreateNtupleDColumn("del_posx"); // column Id = 7
+      man->CreateNtupleDColumn("del_posy"); // column Id = 8
+      man->CreateNtupleDColumn("del_posz"); // column Id = 9
+
+      man->CreateNtupleDColumn("vertex.x"); // column Id = 7
+      man->CreateNtupleDColumn("vertex.y"); // column Id = 8
+      man->CreateNtupleDColumn("vertex.z"); // column Id = 9
+    }
+    // if (det->recordTime())
+    {
+      man->CreateNtupleDColumn("del_t");     // column Id = 10
+      man->CreateNtupleDColumn("globTime");  // column Id = 11
+      man->CreateNtupleDColumn("propTime");  // column Id = 12
+      man->CreateNtupleDColumn("localTime"); // column Id = 13
+    }
+
+    // if (det->recordEnergy())
+    {
+      man->CreateNtupleDColumn("ni_edep");  // column Id = 14
+      man->CreateNtupleDColumn("tot_edep"); // column Id = 15
+      man->CreateNtupleDColumn("tot_E");    // column Id =16
+      man->CreateNtupleDColumn("tot_KE");   // column Id=17
+    }
+    // if (det->recordMomentum())
+    {
+      man->CreateNtupleDColumn("momx"); // column Id = 18
+      man->CreateNtupleDColumn("momy"); // column Id = 19
+      man->CreateNtupleDColumn("momz"); // column Id = 20
+      man->CreateNtupleDColumn("px");   // column Id = 21
+      man->CreateNtupleDColumn("py");   // column Id = 22
+      man->CreateNtupleDColumn("pz");   // column Id = 23
+    
+
+    }
+    man->FinishNtuple();
+ 
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void RunAction::EndOfRunAction(const G4Run* run)
 {
-  G4int nofEvents = run->GetNumberOfEvent();
-  if (nofEvents == 0) return;
-
-  // Merge accumulables
-  G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
-  accumulableManager->Merge();
-
-  // Compute dose = total energy deposit in a run and its variance
-  //
-  G4double edep  = fEdep.GetValue();
-  G4double edep2 = fEdep2.GetValue();
-
-  G4double rms = edep2 - edep*edep/nofEvents;
-  if (rms > 0.) rms = std::sqrt(rms); else rms = 0.;
-
-  const DetectorConstruction* detConstruction
-   = static_cast<const DetectorConstruction*>
-     (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
-  G4double mass = detConstruction->GetScoringVolume()->GetMass();
-  G4double dose = edep/mass;
-  G4double rmsDose = rms/mass;
 
   // Run conditions
   //  note: There is no primary generator action object for "master"
   //        run manager for multi-threaded mode.
-  const PrimaryGeneratorAction* generatorAction
-   = static_cast<const PrimaryGeneratorAction*>
-     (G4RunManager::GetRunManager()->GetUserPrimaryGeneratorAction());
-  G4String runCondition;
-  if (generatorAction)
-  {
-    const G4ParticleGun* particleGun = generatorAction->GetParticleGun();
-    runCondition += particleGun->GetParticleDefinition()->GetParticleName();
-    runCondition += " of ";
-    G4double particleEnergy = particleGun->GetParticleEnergy();
-    runCondition += G4BestUnit(particleEnergy,"Energy");
-  }
 
-  // Print
-  //
-  if (IsMaster()) {
-    G4cout
-     << G4endl
-     << "--------------------End of Global Run-----------------------";
-  }
-  else {
-    G4cout
-     << G4endl
-     << "--------------------End of Local Run------------------------";
-  }
 
-  G4cout
-     << G4endl
-     << " The run consists of " << nofEvents << " "<< runCondition
-     << G4endl
-     << " Cumulated dose per run, in scoring volume : "
-     << G4BestUnit(dose,"Dose") << " rms = " << G4BestUnit(rmsDose,"Dose")
-     << G4endl
-     << "------------------------------------------------------------"
-     << G4endl
-     << G4endl;
+    G4AnalysisManager* man = G4AnalysisManager::Instance();
+    man->Write();
+    man->CloseFile();
+    G4cout<<"File writing done...\n";
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void RunAction::AddEdep(G4double edep)
 {
-  fEdep  += edep;
-  fEdep2 += edep*edep;
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

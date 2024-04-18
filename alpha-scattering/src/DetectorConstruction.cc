@@ -132,7 +132,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   G4LogicalVolume* logicDet =
     new G4LogicalVolume(solidDet,            //its solid
                         detector_mat,             //its material
-                        "detector");         //its name
+                        "Detector");         //its name
 
   new G4PVPlacement(0,                       //no rotation
                     G4ThreeVector(),         //at (0,0,0)
