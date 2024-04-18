@@ -84,7 +84,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
  // create world volume
   G4Box* solidWorld =
     new G4Box("World",                       //its name
-       0.5*world_sizeXY, 0.5*world_sizeXY, 0.5*world_sizeZ);     //its size
+       0.5*world_sizeXYZ, 0.5*world_sizeXYZ, 0.5*world_sizeXYZ);     //its size
 
   G4LogicalVolume* logicWorld =
     new G4LogicalVolume(solidWorld,          //its solid
@@ -123,27 +123,28 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 
     // create detector
-  G4Sphere (const G4String &pName, G4double pRmin, G4double pRmax, G4double pSPhi, G4double pDPhi, G4double pSTheta, G4double pDTheta)
+   //G4Sphere (const G4String &pName, G4double pRmin, G4double pRmax, G4double pSPhi, G4double pDPhi, G4double pSTheta, G4double pDTheta)
+  
   G4Sphere* solidDet =
     new G4Sphere("Detector",                    //its name
-        detecter_inner_radius, detecter_inner_radius, 0.5*target_sizeZ); //its size
+        detecter_inner_radius, detecter_outer_radius, 0.*degree, 360*degree, 0*degree, 180*degree); 
 
-  G4LogicalVolume* logicTar =
-    new G4LogicalVolume(solidTar,            //its solid
-                        target_mat,             //its material
-                        "Target");         //its name
+  G4LogicalVolume* logicDet =
+    new G4LogicalVolume(solidDet,            //its solid
+                        detector_mat,             //its material
+                        "detector");         //its name
 
   new G4PVPlacement(0,                       //no rotation
                     G4ThreeVector(),         //at (0,0,0)
-                    logicTar,                //its logical volume
-                    "Target",              //its name
+                    logicDet,                //its logical volume
+                    "Detector",              //its name
                     logicWorld,              //its mother  volume
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
   // Set Shape2 as scoring volume
   //
-  fScoringVolume = logicShape2;
+  fScoringVolume = logicDet;
 
   //
   //always return the physical World
