@@ -1,4 +1,5 @@
 # Proton Bragg Peak Analysis
+Protons of energy 100 MeV are shot from (0,0,-12.5 cm) along z axis on  water box of size 1 cm x 1 cm x 25 cm. The dose deposition is histogrammed using a scoring volume.
 
 ### Activities  
 
