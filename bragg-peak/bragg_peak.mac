@@ -14,8 +14,8 @@
 /score/quantity/energyDeposit eDep MeV
 /score/close
 
-/gun/particle proton
-/gun/energy 200 MeV
+/gun/particle pi+
+/gun/energy 50 MeV
 #
 /run/beamOn 1000
 /score/dumpQuantityToFile box1 eDep eDep.txt

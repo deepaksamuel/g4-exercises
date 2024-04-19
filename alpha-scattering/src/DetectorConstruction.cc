@@ -65,7 +65,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   
   // define materials
   
-  G4Material* world_mat = nist->FindOrBuildMaterial("G4_Galactic");//Vaccum 
+  G4Material* world_mat = nist->FindOrBuildMaterial("G4_Galactic");//Vaccum
   G4Material* target_mat = nist->FindOrBuildMaterial("G4_Au"); // Gold target
   G4Material* detector_mat = nist->FindOrBuildMaterial("G4_AIR"); // simple material
   
