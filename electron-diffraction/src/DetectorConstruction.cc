@@ -75,7 +75,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   G4double world_sizeXYZ = 1*cm; // 2cm cube
   // target (cube)
   G4double target_sizeXY = 0.5*cm; // 1cm lateral size
-  G4double target_sizeZ  = 0.005*um; // 1 micron thickness
+  G4double target_sizeZ  = 4*mm; // 1 micron thickness
   //detector (sphere)
   G4double detecter_inner_radius = 0.499*cm; 
   G4double detecter_outer_radius = 0.500*cm; 

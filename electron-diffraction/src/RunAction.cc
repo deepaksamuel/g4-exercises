@@ -72,8 +72,8 @@ void RunAction::BeginOfRunAction(const G4Run*)
 
 
   G4AnalysisManager* man = G4AnalysisManager::Instance();
-    man->SetNtupleMerging(true); // very important
-    man->OpenFile("output.root");
+    // man->SetNtupleMerging(true); // very important
+    man->OpenFile("output.csv");
 
     man->CreateNtuple("simple", "out_data");
 
@@ -81,7 +81,6 @@ void RunAction::BeginOfRunAction(const G4Run*)
     man->CreateNtupleDColumn("pid");        // column Id = 1
     // man->CreateNtupleSColumn("detectorId"); // column Id = 2
     // man->CreateNtupleDColumn("is_primary"); // column Id = 3
-
     // if (det->recordPosition())
     {
       man->CreateNtupleDColumn("posx");     // column Id = 4

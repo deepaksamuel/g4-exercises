@@ -39,6 +39,7 @@
 #include "G4UIExecutive.hh"
 
 #include "Randomize.hh"
+#include "PhysicsList.hh"
 
 using namespace B1;
 
@@ -69,9 +70,7 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(new DetectorConstruction());
 
   // Physics list
-  G4VModularPhysicsList* physicsList = new QBBC;
-  physicsList->SetVerboseLevel(1);
-  runManager->SetUserInitialization(physicsList);
+  runManager->SetUserInitialization(new PhysicsList);
 
   // User action initialization
   runManager->SetUserInitialization(new ActionInitialization());

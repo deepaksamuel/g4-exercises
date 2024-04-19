@@ -3,10 +3,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.optimize import curve_fit
+#column double pid
+#column double posx
+#column double posy
+#column double posz
+#column double tot_E
+#column double tot_KE
 
-
-headers = ['eid','pid','detector','is_primary','x','y','z','del_x','del_y','del_z','vx','vy','vz','delt','globTime',"propTime",'localTime','ni_edep','tot_edep',
-           'tot_E','tot_KE','momx','momy','momz','px','py','pz']
+headers = ['pid','x','y','z','tot_E','tot_KE']
 
 df = pd.read_csv("build/output_nt_simple_t0.csv",skiprows=30,header=0,names=headers)
 
@@ -18,9 +22,11 @@ df = pd.read_csv("build/output_nt_simple_t0.csv",skiprows=30,header=0,names=head
 
 # plot angular distribution
 
-# r= np.sqrt(df['x']**2 + df['y']**2 + df['z']**2)  # Magnitude of the vector
-# zenith_rad = np.arccos(np.sqrt(df['x']**2 + df['z']**2) / r)    
-# plt.hist(np.degrees(zenith_rad),bins=100,log=True)
+r= np.sqrt(df['x']**2 + df['y']**2 + df['z']**2)  # Magnitude of the vector
+df['theta'] = np.arccos(np.sqrt(df['x']**2 + df['z']**2) / r)
+
+df = df[df['theta']>0.1]
+plt.hist(np.degrees(df['theta']),bins=120,log=True)
 
 
 
