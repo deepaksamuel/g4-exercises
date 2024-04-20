@@ -5,25 +5,45 @@ The default world material is Air.
 
 ### Activities
 
-a. Observe how many particles exit the target as a function of target thickness
+Read the original work of Geiger and Marsden here:
+https://royalsocietypublishing.org/doi/pdf/10.1098/rspa.1909.0054
 
-b. Observe particles come out of the scattering:  
+1. Find out from the paper, which source he used in the experiment. 
+
+2. Are alpha-rays mono-energetic? What is their typical energy range?
+
+3. What type of detector was used and how far was it placed from the source?
+
+4. What were the other materials used in this experiment?
+
+5. What is the typical thickness of the foils used? 
+
+6. Approximately what was the activity of the source?
+
+7. Approximately, how many alphas were reflected back?
+
+
+8. Observe how many particles exit the target as a function of target thickness
+
+
+9. Observe particles come out of the scattering:  
 The PDG particle codes are here: https://pdg.lbl.gov/2007/reviews/montecarlorpp.pdf
 
   - alpha: 1000020000
   - electron: 11
 
-c. What is the proportion of these particles?
+10. What is the proportion of these particles?
 
-d. What is energy of alpha particles?
+11. What is energy of alpha particles?
 
-d. What is energy of electrons?
+12. What is energy of electrons?
 
-e. Plot the angular distribution of the alpha particles.  
+13. Plot the angular distribution of the alpha particles.  
     - Roughly, what is the percentage of alpha particles that are reflected back.
 
-f. Change the world material to Air and observe what happens to the trajectories. Qualitatively express your observations.  
+14. Change the world material to Air and observe what happens to the trajectories. Qualitatively express your observations.  
     - Repeat the entire exercise with Air.
+
 
 
 
