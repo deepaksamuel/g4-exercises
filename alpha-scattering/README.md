@@ -8,7 +8,10 @@ The default world material is Air.
 Read the original work of Geiger and Marsden here:
 https://royalsocietypublishing.org/doi/pdf/10.1098/rspa.1909.0054
 
-1. Find out from the paper, which source he used in the experiment. 
+Rutherford's paper:  
+https://mrmackenzie.co.uk/wp-content/uploads/2011/05/Rutherford-paper.pdf
+
+1. Find out from the first paper, which source he used in the experiment. 
 
 2. Are alpha-rays mono-energetic? What is their typical energy range?
 
