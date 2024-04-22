@@ -132,56 +132,56 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   
 
   // detector 1  
-  detNum =1;
-  detName = detName_prefix + std::to_string(detNum);
+  // detNum =1;
+  // detName = detName_prefix + std::to_string(detNum);
 
-  G4Tubs* solidDet1 =
-    new G4Tubs(detName,                       //its name
-       pRMin,pRMax,pDz,pSPhi,pDPhi);     //its size
+  // G4Tubs* solidDet1 =
+  //   new G4Tubs(detName,                       //its name
+  //      pRMin,pRMax,pDz,pSPhi,pDPhi);     //its size
   
-  G4LogicalVolume* logicDet1 =
-    new G4LogicalVolume(solidDet1,          //its solid
-                        det_mat,           //its material
-                        detName);            //its name
+  // G4LogicalVolume* logicDet1 =
+  //   new G4LogicalVolume(solidDet1,          //its solid
+  //                       det_mat,           //its material
+  //                       detName);            //its name
 
 
-    new G4PVPlacement(0,                     //no rotation
-                      G4ThreeVector(0,0,35*cm),       //at (0,0,0) // world usually placed at 0,0,0
-                      logicDet1,            //its logical volume
-                      detName,               //its name 
-                      logicWorld,                     //its mother  volume is the world volume
-                      false,                 //no boolean operation
-                      0,                     //copy number
-                      checkOverlaps);        //overlaps checking                
+  //   new G4PVPlacement(0,                     //no rotation
+  //                     G4ThreeVector(0,0,35*cm),       //at (0,0,0) // world usually placed at 0,0,0
+  //                     logicDet1,            //its logical volume
+  //                     detName,               //its name 
+  //                     logicWorld,                     //its mother  volume is the world volume
+  //                     false,                 //no boolean operation
+  //                     0,                     //copy number
+  //                     checkOverlaps);        //overlaps checking                
   
 
 
   // detector 2 - rotated by 90 deg
-  detNum=2; 
-  detName = detName_prefix + std::to_string(detNum);
-  G4Tubs* solidDet2 =
-    new G4Tubs(detName+detNum,                       //its name
-       pRMin,pRMax,pDz,pSPhi,pDPhi);     //its size
+  // detNum=2; 
+  // detName = detName_prefix + std::to_string(detNum);
+  // G4Tubs* solidDet2 =
+  //   new G4Tubs(detName+detNum,                       //its name
+  //      pRMin,pRMax,pDz,pSPhi,pDPhi);     //its size
   
-  G4LogicalVolume* logicDet2 =
-    new G4LogicalVolume(solidDet2,          //its solid
-                        det_mat,           //its material
-                        detName+detNum);            //its name
+  // G4LogicalVolume* logicDet2 =
+  //   new G4LogicalVolume(solidDet2,          //its solid
+  //                       det_mat,           //its material
+  //                       detName+detNum);            //its name
 
 
-    G4RotationMatrix* rotation = new G4RotationMatrix();
-    rotation->rotateX(0*deg);
-    rotation->rotateY(90*deg);
-    rotation->rotateZ(0*deg);
+  //   G4RotationMatrix* rotation = new G4RotationMatrix();
+  //   rotation->rotateX(0*deg);
+  //   rotation->rotateY(90*deg);
+  //   rotation->rotateZ(0*deg);
 
-    new G4PVPlacement(rotation,                     //no rotation
-                      G4ThreeVector(35*cm,0,0),       //at (0,0,0) // world usually placed at 0,0,0
-                      logicDet2,            //its logical volume
-                      detName+detNum,               //its name 
-                      logicWorld,                     //its mother  volume is the world volume
-                      false,                 //no boolean operation
-                      0,                     //copy number
-                      checkOverlaps);        //overlaps checking    
+  //   new G4PVPlacement(rotation,                     //no rotation
+  //                     G4ThreeVector(35*cm,0,0),       //at (0,0,0) // world usually placed at 0,0,0
+  //                     logicDet2,            //its logical volume
+  //                     detName+detNum,               //its name 
+  //                     logicWorld,                     //its mother  volume is the world volume
+  //                     false,                 //no boolean operation
+  //                     0,                     //copy number
+  //                     checkOverlaps);        //overlaps checking    
 
 
 
