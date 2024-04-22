@@ -39,6 +39,7 @@
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4Tubs.hh"
 
 namespace B1
 {
@@ -66,19 +67,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   // define materials
   
   G4Material* world_mat = nist->FindOrBuildMaterial("G4_Galactic");//Vaccum
-  G4Material* target_mat = nist->FindOrBuildMaterial("G4_Au"); // Gold target
-  G4Material* detector_mat = nist->FindOrBuildMaterial("G4_AIR"); // simple material
+  G4Material* det_mat = nist->FindOrBuildMaterial("G4_Al");//Vaccum
   
 
   // define sizes:
   // World (cube)
-  G4double world_sizeXYZ = 2*cm; // 2cm cube
-  // target (cube)
-  G4double target_sizeXY = 1*cm; // 1cm lateral size
-  G4double target_sizeZ  = 5*um; // 1 micron thickness
-  //detector (sphere)
-  G4double detecter_inner_radius = 0.999*cm; 
-  G4double detecter_outer_radius = 1.000*cm; 
+  G4double world_sizeXYZ = 100*cm; // 2cm cube
+
 
 
  // create world volume
@@ -102,49 +97,106 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                       checkOverlaps);        //overlaps checking
 
 
-  // create target
-  G4Box* solidTar =
-    new G4Box("Target",                    //its name
-        0.5*target_sizeXY, 0.5*target_sizeXY, 0.5*target_sizeZ); //its size
-
-  G4LogicalVolume* logicTar =
-    new G4LogicalVolume(solidTar,            //its solid
-                        target_mat,             //its material
-                        "Target");         //its name
-
-  new G4PVPlacement(0,                       //no rotation
-                    G4ThreeVector(),         //at (0,0,0)
-                    logicTar,                //its logical volume
-                    "Target",              //its name
-                    logicWorld,              //its mother  volume
-                    false,                   //no boolean operation
-                    0,                       //copy number
-                    checkOverlaps);          //overlaps checking
-
-
-    // create detector
-   //G4Sphere (const G4String &pName, G4double pRmin, G4double pRmax, G4double pSPhi, G4double pDPhi, G4double pSTheta, G4double pDTheta)
+  //G4Tubs (const G4String &pName, G4double pRMin, G4double pRMax, G4double pDz, G4double pSPhi, G4double pDPhi)
+  double pRMin =0; 
+  double pRMax =10*cm;
+  double pDz   =5*cm;
+  double pSPhi =0;
+  double pDPhi =360*degree;
   
-  G4Sphere* solidDet =
-    new G4Sphere("Detector",                    //its name
-        detecter_inner_radius, detecter_outer_radius, 0.*degree, 360*degree, 0*degree, 180*degree); 
 
-  G4LogicalVolume* logicDet =
-    new G4LogicalVolume(solidDet,            //its solid
-                        detector_mat,             //its material
-                        "Detector");         //its name
 
-  new G4PVPlacement(0,                       //no rotation
-                    G4ThreeVector(),         //at (0,0,0)
-                    logicDet,                //its logical volume
-                    "Detector",              //its name
-                    logicWorld,              //its mother  volume
-                    false,                   //no boolean operation
-                    0,                       //copy number
-                    checkOverlaps);          //overlaps checking
+  G4String detName_prefix = "detector";
+
+  // detector 0
+  int detNum =0;
+  G4String detName = detName_prefix + std::to_string(detNum);
+  G4Tubs* solidDet0 =
+    new G4Tubs(detName,                       //its name
+       pRMin,pRMax,pDz,pSPhi,pDPhi);     //its size
+  
+  G4LogicalVolume* logicDet0 =
+    new G4LogicalVolume(solidDet0,          //its solid
+                        det_mat,           //its material
+                        detName);            //its name
+
+
+    new G4PVPlacement(0,                     //no rotation
+                      G4ThreeVector(0,0,-35*cm),       //at (0,0,0) // world usually placed at 0,0,0
+                      logicDet0,            //its logical volume
+                      detName,               //its name 
+                      logicWorld,                     //its mother  volume is the world volume
+                      false,                 //no boolean operation
+                      0,                     //copy number
+                      checkOverlaps);        //overlaps checking                
+  
+
+  // detector 1  
+  detNum =1;
+  detName = detName_prefix + std::to_string(detNum);
+
+  G4Tubs* solidDet1 =
+    new G4Tubs(detName,                       //its name
+       pRMin,pRMax,pDz,pSPhi,pDPhi);     //its size
+  
+  G4LogicalVolume* logicDet1 =
+    new G4LogicalVolume(solidDet1,          //its solid
+                        det_mat,           //its material
+                        detName);            //its name
+
+
+    new G4PVPlacement(0,                     //no rotation
+                      G4ThreeVector(0,0,35*cm),       //at (0,0,0) // world usually placed at 0,0,0
+                      logicDet1,            //its logical volume
+                      detName,               //its name 
+                      logicWorld,                     //its mother  volume is the world volume
+                      false,                 //no boolean operation
+                      0,                     //copy number
+                      checkOverlaps);        //overlaps checking                
+  
+
+
+  // detector 2 - rotated by 90 deg
+  detNum=2; 
+  detName = detName_prefix + std::to_string(detNum);
+  G4Tubs* solidDet2 =
+    new G4Tubs(detName+detNum,                       //its name
+       pRMin,pRMax,pDz,pSPhi,pDPhi);     //its size
+  
+  G4LogicalVolume* logicDet2 =
+    new G4LogicalVolume(solidDet2,          //its solid
+                        det_mat,           //its material
+                        detName+detNum);            //its name
+
+
+    G4RotationMatrix* rotation = new G4RotationMatrix();
+    rotation->rotateX(0*deg);
+    rotation->rotateY(90*deg);
+    rotation->rotateZ(0*deg);
+
+    new G4PVPlacement(rotation,                     //no rotation
+                      G4ThreeVector(35*cm,0,0),       //at (0,0,0) // world usually placed at 0,0,0
+                      logicDet2,            //its logical volume
+                      detName+detNum,               //its name 
+                      logicWorld,                     //its mother  volume is the world volume
+                      false,                 //no boolean operation
+                      0,                     //copy number
+                      checkOverlaps);        //overlaps checking    
+
+
+
+
+
+
+
+
+
+
+
+
   // Set Shape2 as scoring volume
   //
-  fScoringVolume = logicDet;
+  fScoringVolume = logicDet0;
 
   //
   //always return the physical World
