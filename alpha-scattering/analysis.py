@@ -10,6 +10,12 @@ headers = ['eid','pid','detector','is_primary','x','y','z','del_x','del_y','del_
 
 df = pd.read_csv("build/output_nt_simple.csv",skiprows=30,header=0,names=headers)
 
+df2 = df[df["pid"]==1000020000]
+
+plt.hist(df['pid'],log=True) 
+
+# df['pid'].unique()
+
 # df = df[df['pid']==1000020000] # select alpha particles
 
 # plt.hist(df['z'],log=True) 
@@ -18,9 +24,9 @@ df = pd.read_csv("build/output_nt_simple.csv",skiprows=30,header=0,names=headers
 
 # plot angular distribution
 
-r= np.sqrt(df['x']**2 + df['y']**2 + df['z']**2)  # Magnitude of the vector
-zenith_rad = np.arccos(np.sqrt(df['x']**2 + df['z']**2) / r)    
-plt.hist(np.degrees(zenith_rad),bins=100,log=True)
+# r= np.sqrt(df['x']**2 + df['y']**2 + df['z']**2)  # Magnitude of the vector
+# zenith_rad = np.arccos(np.sqrt(df['x']**2 + df['z']**2) / r)    
+# plt.hist(np.degrees(zenith_rad),bins=100,log=True)
 
 
 
