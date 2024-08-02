@@ -72,13 +72,13 @@ void RunAction::BeginOfRunAction(const G4Run*)
 
 
   G4AnalysisManager* man = G4AnalysisManager::Instance();
-    // man->SetNtupleMerging(true); // very important
-    man->OpenFile("output.csv");
+    man->SetNtupleMerging(true); // very important
+    man->OpenFile("output.root");
 
     man->CreateNtuple("simple", "out_data");
 
     // man->CreateNtupleDColumn("eid");        // column Id = 0
-    man->CreateNtupleDColumn("pid");        // column Id = 1
+    // man->CreateNtupleDColumn("pid");        // column Id = 1
     // man->CreateNtupleSColumn("detectorId"); // column Id = 2
     // man->CreateNtupleDColumn("is_primary"); // column Id = 3
     // if (det->recordPosition())
@@ -107,7 +107,7 @@ void RunAction::BeginOfRunAction(const G4Run*)
       // man->CreateNtupleDColumn("ni_edep");  // column Id = 14
       // man->CreateNtupleDColumn("tot_edep"); // column Id = 15
       man->CreateNtupleDColumn("tot_E");    // column Id =16
-      man->CreateNtupleDColumn("tot_KE");   // column Id=17
+      // man->CreateNtupleDColumn("tot_KE");   // column Id=17
     }
     // if (det->recordMomentum())
     {

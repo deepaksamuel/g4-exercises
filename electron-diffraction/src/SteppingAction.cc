@@ -73,16 +73,25 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   // collect energy deposited in this step
   // G4double edepStep = step->GetTotalEnergyDeposit();
   // fEventAction->AddEdep(edepStep);
-  if(G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID()%100000 ==0)
-    G4cout<<"Progress: "<<G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID()/1000000000 * 100<<G4endl;
+
 
   if(volume->GetName()=="Detector" && step->GetTrack()->GetDefinition()->GetPDGEncoding()==11)
 {
+    if(G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID()%1000000 ==0)
+    G4cout<<"Progress: "<<G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID()<<G4endl;
+
     uint eid = G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID();
     int columnId=0;
+    // G4Track* track = (G4Track*)(step->GetTrack());
+    // G4double Ekin = track->GetTotalEnergy();
+    // if (Ekin < 148) track->SetTrackStatus(fStopAndKill);
+
+    // else
+    {
+
     G4AnalysisManager *man = G4AnalysisManager::Instance();
     // man->FillNtupleDColumn(columnId++, eid);
-    man->FillNtupleDColumn(columnId++, step->GetTrack()->GetDefinition()->GetPDGEncoding());
+    // man->FillNtupleDColumn(columnId++, step->GetTrack()->GetDefinition()->GetPDGEncoding());
     // man->FillNtupleSColumn(columnId++, volume->GetName());
     // man->FillNtupleDColumn(columnId++, step->GetTrack()->GetParentID());
 
@@ -105,7 +114,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     // man->FillNtupleDColumn(columnId++, step->GetNonIonizingEnergyDeposit());
     // man->FillNtupleDColumn(columnId++, step->GetTotalEnergyDeposit());
     man->FillNtupleDColumn(columnId++, step->GetTrack()->GetTotalEnergy());
-    man->FillNtupleDColumn(columnId++, step->GetTrack()->GetKineticEnergy());
+    // man->FillNtupleDColumn(columnId++, step->GetTrack()->GetKineticEnergy());
 
     // man->FillNtupleDColumn(columnId++, step->GetTrack()->GetMomentum().x());
     // man->FillNtupleDColumn(columnId++, step->GetTrack()->GetMomentum().y());
@@ -115,6 +124,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     // man->FillNtupleDColumn(columnId++, step->GetTrack()->GetMomentumDirection().z());
 
     man->AddNtupleRow();
+    }
 
 
 }

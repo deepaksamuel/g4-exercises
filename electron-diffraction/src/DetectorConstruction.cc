@@ -66,19 +66,25 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   // define materials
   
   G4Material* world_mat = nist->FindOrBuildMaterial("G4_Galactic");//Vaccum
-  G4Material* target_mat = nist->FindOrBuildMaterial("G4_O"); // Oxygen target
+  
+  G4double density = 10000*g/cm3;
+  G4double a = 32*g/mole;
+  // G4Material* target_mat = new G4Material("oxygen",8.,a,density); // target material
+  G4Material* target_mat = nist->FindOrBuildMaterial("G4_Au"); // Oxygen target
+  
+
   G4Material* detector_mat = nist->FindOrBuildMaterial("G4_AIR"); // simple material
   
 
   // define sizes:
   // World (cube)
-  G4double world_sizeXYZ = 1*cm; // 2cm cube
+  G4double world_sizeXYZ = 0.5*cm; // 2cm cube
   // target (cube)
-  G4double target_sizeXY = 0.5*cm; // 1cm lateral size
-  G4double target_sizeZ  = 4*mm; // 1 micron thickness
+  G4double target_sizeXY = 0.49999*cm; // 1cm lateral size
+  G4double target_sizeZ  = 0.1*mm; // 1 micron thickness
   //detector (sphere)
-  G4double detecter_inner_radius = 0.499*cm; 
-  G4double detecter_outer_radius = 0.500*cm; 
+  G4double detecter_inner_radius = 0.24999*cm; 
+  G4double detecter_outer_radius = 0.25000*cm; 
 
 
  // create world volume

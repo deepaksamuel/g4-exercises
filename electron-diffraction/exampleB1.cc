@@ -41,6 +41,8 @@
 #include "Randomize.hh"
 #include "PhysicsList.hh"
 
+#include <G4PhysListFactory.hh>
+
 using namespace B1;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -70,7 +72,11 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(new DetectorConstruction());
 
   // Physics list
-  runManager->SetUserInitialization(new PhysicsList);
+  // runManager->SetUserInitialization(new PhysicsList);
+  
+    G4PhysListFactory *physListFactory = new G4PhysListFactory();
+    G4VModularPhysicsList *physicsList = physListFactory->GetReferencePhysList("QGSP_BIC");
+    runManager->SetUserInitialization(physicsList);
 
   // User action initialization
   runManager->SetUserInitialization(new ActionInitialization());
@@ -78,17 +84,25 @@ int main(int argc,char** argv)
   // Initialize visualization
   //
   G4VisManager* visManager = new G4VisExecutive;
-  // G4VisExecutive can take a verbosity argument - see /vis/verbose guidance.
+  // G4VisExecutive can take a verbosity argument - see /vis/verbosefdsfd guidance.
   // G4VisManager* visManager = new G4VisExecutive("Quiet");
   visManager->Initialize();
 
   // Get the pointer to the User Interface manager
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
+  //UImanager->ApplyCommand("/process/em/setSingleScattering Mott");
+  // UImanager->ApplyCommand("/process/inactivate msc"); // disable multiple scattering
+  // UImanager->ApplyCommand("/run/setCut 1 km"); // disable delta rays and bremstrahlung
+  UImanager->ApplyCommand("/process/em/setNuclearFormFactor Flat");
+  // UImanager->ApplyCommand("/process/inactivate msc");
+  // UImanager->ApplyCommand("/run/setCut 1 km");
 
+  
   // Process macro or start UI session
   //
   if ( ! ui ) {
     // batch mode
+
     G4String command = "/control/execute ";
     G4String fileName = argv[1];
     UImanager->ApplyCommand(command+fileName);
