@@ -13,7 +13,7 @@ For the above setup it required 10^9 particles and the simulation ran for 1 hour
 Only elastic scattering was selected was enforcing a cut of E>180 MeV.
 
 
-
+For this example to work, the nuclear form factors have to be set appropiately. It was set to `Flat` (see, exampleB1.cc).
 
 ### Activities
 
