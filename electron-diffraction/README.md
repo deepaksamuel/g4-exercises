@@ -15,6 +15,15 @@ Only elastic scattering was selected was enforcing a cut of E>180 MeV.
 
 For this example to work, the nuclear form factors have to be set appropiately. It was set to `Flat` (see, exampleB1.cc).
 
+Run using the mac file:
+
+```./exampleB1 electron_diffraction.mac```
+
+This would produce the `output.root` file.
+
+Run root `analysis.C` which opens the output.root and plots scattering angle distribution. 
+
+
 ### Activities
 
 a. Change the target to G4_In and check if you see a minimum at 60 deg. Repeat for Carbon and Oxygen and verify the plots in Kenneth Krane
