@@ -2,10 +2,19 @@
 
 source /snap/gate/45/usr/local/bin/geant4.sh
 
-Installations:
-VSCode
-Python
-Jupyter extension (on vscode)
+Installations required:  
+- OS: Ubuntu or WSL2 on Windows 10 or 11 with Ubuntu flavour
+    - `https://learn.microsoft.com/en-us/windows/wsl/install` (install only WSL2 please)
+    - After installing WSL2, go to Windows store and search for WSL and from the list choose Ubuntu 24.04.1 LTS  
+    - ![alt text](image.png)
+    - Once installed Ubuntu terminal can be started any other app on Windows.
+- VSCode 
+    - If you using WSL2, you have to install this on Windows and not inside Ubuntu 
+- Jupyter extension (on VSCode)
+- To install Geant4 you can use snap package manager:
+    - `sudo apt update`
+    - `sudo apt install snapd` 
+    - `sudo snap install gate`
 
 All codes contain a README.md file and a analysis.py code to get started with the analysis.
 
